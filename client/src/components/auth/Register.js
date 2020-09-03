@@ -11,10 +11,10 @@ const Register = () => {
   });
   const { name, email, password, password2 } = user;
   const { register } = authcontext;
-  onchange = (e) => {
+  const onchange = (e) => {
     Setuser({ ...user, [e.target.name]: e.target.value });
   };
-  onsubmit = (e) => {
+  const onsubmit = (e) => {
     e.preventDefault();
     register({
       name,

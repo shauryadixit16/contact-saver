@@ -1,5 +1,5 @@
 const express = require('express');
-const Contact = require('./models/Contact');
+const Contact = require('../models/Contact');
 const router = express.Router();
 const { check, validationResult } = require('express-validator');
 const auth = require('../middleware/auth');
