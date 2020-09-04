@@ -1,7 +1,22 @@
 import React, { useState, useContext } from 'react';
 import authContext from '../../context/auth/authContext';
-const Register = () => {
+import alertContext from '../../context/alert/alertContext';
+import { useEffect } from 'react';
+const Register = (props) => {
   const authcontext = useContext(authContext);
+  const alertcontext = useContext(alertContext);
+
+  const { register, isAuthenticated, error, clearerrors } = authcontext;
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/');
+    }
+    if ((error = 'User already exists')) {
+      alertcontext.setalert(error);
+      clearerrors();
+    }
+  }, [error, isAuthenticated, props.history]);
 
   const [user, Setuser] = useState({
     name: '',
@@ -10,7 +25,7 @@ const Register = () => {
     password2: '',
   });
   const { name, email, password, password2 } = user;
-  const { register } = authcontext;
+
   const onchange = (e) => {
     Setuser({ ...user, [e.target.name]: e.target.value });
   };

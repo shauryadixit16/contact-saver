@@ -1,6 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import authContext from '../../context/auth/authContext';
+import alertContext from '../../context/alert/alertContext';
+import { useEffect } from 'react';
+const Login = (props) => {
+  const authcontext = useContext(authContext);
+  const alertcontext = useContext(alertContext);
+  const { login, isAuthenticated, error, clearerrors } = authcontext;
 
-const Login = () => {
+  useEffect(() => {
+    if (isAuthenticated) {
+      props.history.push('/');
+    }
+    if ((error = 'User already exists')) {
+      alertcontext.setalert(error);
+      clearerrors();
+    }
+  }, [error, isAuthenticated, props.history]);
   const [user, Setuser] = useState({
     email: '',
     password: '',
@@ -12,7 +27,10 @@ const Login = () => {
   };
   onsubmit = (e) => {
     e.preventDefault();
-    console.log('User Logined');
+    login({
+      email,
+      password,
+    });
   };
   return (
     <div className='form-container'>
@@ -22,7 +40,13 @@ const Login = () => {
       <form onSubmit={onsubmit}>
         <div className='form-group'>
           <label htmlFor='email'>Email</label>
-          <input type='text' onChange={onchange} name='email' value={email} />
+          <input
+            type='text'
+            onChange={onchange}
+            name='email'
+            value={email}
+            required
+          />
         </div>
         <div className='form-group'>
           <label htmlFor='password'>Password</label>
@@ -31,6 +55,7 @@ const Login = () => {
             onChange={onchange}
             name='password'
             value={password}
+            required
           />
         </div>
         <input
